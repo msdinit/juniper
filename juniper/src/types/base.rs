@@ -93,7 +93,7 @@ where
                     if let Some(ref default_value) = arg.default_value {
                         args.insert(arg.name.as_str(), default_value.clone());
                     } else {
-                        args.insert(arg.name.as_str(), InputValue::null());
+                        args.insert(arg.name.as_str(), InputValue::absent());
                     }
                 }
             }

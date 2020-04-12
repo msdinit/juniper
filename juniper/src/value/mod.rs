@@ -23,6 +23,7 @@ pub use self::scalar::{DefaultScalarValue, ParseScalarResult, ParseScalarValue, 
 #[allow(missing_docs)]
 pub enum Value<S = DefaultScalarValue> {
     Null,
+    Absent,
     Scalar(S),
     List(Vec<Value<S>>),
     Object(Object<S>),
@@ -37,6 +38,10 @@ where
     /// Construct a null value.
     pub fn null() -> Self {
         Value::Null
+    }
+
+    pub fn absent() -> Self {
+        Value::Absent
     }
 
     /// Construct an integer value.
@@ -166,6 +171,7 @@ impl<S: ScalarValue> ToInputValue<S> for Value<S> {
     fn to_input_value(&self) -> InputValue<S> {
         match *self {
             Value::Null => InputValue::Null,
+            Value::Absent => InputValue::Absent,
             Value::Scalar(ref s) => InputValue::Scalar(s.clone()),
             Value::List(ref l) => InputValue::List(
                 l.iter()
@@ -190,6 +196,7 @@ impl<S: ScalarValue> Display for Value<S> {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         match self {
             Value::Null => write!(f, "null"),
+            Value::Absent => Ok(()),
             Value::Scalar(s) => {
                 if let Some(string) = s.as_string() {
                     write!(f, "\"{}\"", string)

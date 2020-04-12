@@ -9,6 +9,7 @@ use crate::{
     validation::RuleError,
     value::{DefaultScalarValue, Object, ParseScalarResult, ParseScalarValue, Value},
     GraphQLError::ValidationError,
+    GraphQLOption
 };
 
 #[derive(Debug)]
@@ -74,6 +75,10 @@ impl TestType {
         format!("{:?}", input)
     }
 
+    fn field_with_absent_string_input(input: GraphQLOption<String>) -> String {
+        format!("{:?}", input)
+    }
+
     fn field_with_non_nullable_string_input(input: String) -> String {
         format!("{:?}", input)
     }
@@ -135,6 +140,7 @@ where
         EmptyMutation::<()>::new(),
         EmptySubscription::<()>::new(),
     );
+    println!("{:#?}", vars);
 
     let (result, errs) = crate::execute(query, None, &schema, &vars, &())
         .await
@@ -142,7 +148,7 @@ where
 
     assert_eq!(errs, []);
 
-    println!("Result: {:?}", result);
+    println!("Result: {:#?}", result);
 
     let obj = result.as_object_value().expect("Result is not an object");
 
@@ -479,6 +485,20 @@ async fn allow_nullable_inputs_to_be_omitted() {
         },
     )
     .await;
+}
+
+#[tokio::test]
+async fn optional_input_resolves_to_absent() {
+    run_query(
+        r#"{ fieldWithAbsentStringInput }"#,
+        |result: &Object<DefaultScalarValue>| {
+            assert_eq!(
+                result.get_field_value("fieldWithAbsentStringInput"),
+                Some(&Value::scalar(r#"Absent"#))
+            );
+        },
+    )
+        .await;
 }
 
 #[tokio::test]

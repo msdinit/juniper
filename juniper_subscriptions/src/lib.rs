@@ -162,6 +162,9 @@ where
         Value::Null => Box::pin(stream::once(async move {
             GraphQLResponse::from_result(Ok((Value::Null, vec![])))
         })),
+        Value::Absent => Box::pin(stream::once(async move {
+            GraphQLResponse::from_result(Ok((Value::Absent, vec![])))
+        })),
         Value::Scalar(s) => Box::pin(s.map(|res| match res {
             Ok(val) => GraphQLResponse::from_result(Ok((val, vec![]))),
             Err(err) => GraphQLResponse::from_result(Ok((Value::Null, vec![err]))),

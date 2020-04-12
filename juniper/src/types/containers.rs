@@ -1,9 +1,4 @@
-use crate::{
-    ast::{FromInputValue, InputValue, Selection, ToInputValue},
-    executor::ExecutionResult,
-    schema::meta::MetaType,
-    value::{ScalarValue, Value},
-};
+use crate::{ast::{FromInputValue, InputValue, Selection, ToInputValue}, executor::ExecutionResult, schema::meta::MetaType, value::{ScalarValue, Value}, GraphQLOption};
 
 use crate::{
     executor::{Executor, Registry},
@@ -50,6 +45,7 @@ where
     fn from_input_value<'a>(v: &'a InputValue<S>) -> Option<Option<T>> {
         match v {
             &InputValue::Null => Some(None),
+            &InputValue::Absent => Some(None),
             v => match v.convert() {
                 Some(x) => Some(Some(x)),
                 None => None,
@@ -303,5 +299,69 @@ where
             Ok(value)
         };
         Box::pin(f)
+    }
+}
+
+impl<S, T> FromInputValue<S> for GraphQLOption<T>
+    where
+        T: FromInputValue<S>,
+        S: ScalarValue,
+{
+    fn from_input_value(v: &InputValue<S>) -> Option<GraphQLOption<T>> {
+        match v {
+            &InputValue::Null => Some(GraphQLOption::None),
+            &InputValue::Absent => Some(GraphQLOption::Absent),
+            v => match v.convert() {
+                Some(x) => Some(GraphQLOption::Some(x)),
+                None => None,
+            },
+        }
+    }
+}
+
+impl<S, T, CtxT> GraphQLType<S> for GraphQLOption<T>
+    where
+        S: ScalarValue,
+        T: GraphQLType<S, Context = CtxT>,
+{
+    type Context = CtxT;
+    type TypeInfo = T::TypeInfo;
+
+    fn name(_: &T::TypeInfo) -> Option<&str> {
+        None
+    }
+
+    fn meta<'r>(info: &T::TypeInfo, registry: &mut Registry<'r, S>) -> MetaType<'r, S>
+        where
+            S: 'r,
+    {
+        registry.build_nullable_type::<T>(info).into_meta()
+    }
+
+    fn resolve(
+        &self,
+        info: &T::TypeInfo,
+        _: Option<&[Selection<S>]>,
+        executor: &Executor<CtxT, S>,
+    ) -> ExecutionResult<S> {
+        match *self {
+            GraphQLOption::Some(ref obj) => executor.resolve(info, obj),
+            GraphQLOption::None => Ok(Value::null()),
+            GraphQLOption::Absent => Ok(Value::absent()),
+        }
+    }
+}
+
+impl<S, T> ToInputValue<S> for GraphQLOption<T>
+    where
+        T: ToInputValue<S>,
+        S: ScalarValue,
+{
+    fn to_input_value(&self) -> InputValue<S> {
+        match *self {
+            GraphQLOption::Some(ref v) => v.to_input_value(),
+            GraphQLOption::None => InputValue::null(),
+            GraphQLOption::Absent => InputValue::absent(),
+        }
     }
 }

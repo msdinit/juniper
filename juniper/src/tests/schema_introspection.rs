@@ -8,7 +8,7 @@ use crate::value::{
 // Only needed for comparisons.
 pub(super) fn sort_schema_value(value: &mut Value) {
     match value {
-        Value::Null | Value::Scalar(_) => {}
+        Value::Null | Value::Absent | Value::Scalar(_) => {}
         Value::List(ref mut items) => {
             items.sort_by(|a, b| {
                 let name_a = a

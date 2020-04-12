@@ -249,7 +249,7 @@ where
             where
                 E: de::Error,
             {
-                Ok(InputValue::null())
+                Ok(InputValue::absent())
             }
 
             fn visit_seq<V>(self, mut visitor: V) -> Result<InputValue<S>, V::Error>
@@ -401,6 +401,7 @@ where
     {
         match *self {
             Value::Null => serializer.serialize_unit(),
+            Value::Absent => serializer.serialize_unit(),
             Value::Scalar(ref s) => s.serialize(serializer),
             Value::List(ref v) => v.serialize(serializer),
             Value::Object(ref v) => v.serialize(serializer),

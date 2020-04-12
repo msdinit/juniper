@@ -222,6 +222,13 @@ impl<'a> fmt::Display for GraphQLError<'a> {
 
 impl<'a> std::error::Error for GraphQLError<'a> {}
 
+#[derive(Debug)]
+pub enum GraphQLOption<T> {
+    Absent,
+    None,
+    Some(T),
+}
+
 /// Execute a query synchronously in a provided schema
 pub fn execute_sync<'a, S, CtxT, QueryT, MutationT, SubscriptionT>(
     document_source: &'a str,

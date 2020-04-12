@@ -212,6 +212,11 @@ where
         InputValue::Null
     }
 
+    /// Construct an absent value.
+    pub fn absent() -> Self {
+        InputValue::Absent
+    }
+
     /// Construct an integer value.
     #[deprecated(since = "0.11.0", note = "Use `InputValue::scalar` instead")]
     pub fn int(i: i32) -> Self {
@@ -529,6 +534,9 @@ mod tests {
     fn test_input_value_fmt() {
         let value: InputValue = InputValue::null();
         assert_eq!(format!("{}", value), "null");
+
+        let value: InputValue = InputValue::absent();
+        assert_eq!(format!("{}", value), "");
 
         let value: InputValue = InputValue::scalar(123);
         assert_eq!(format!("{}", value), "123");
