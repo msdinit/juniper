@@ -25,6 +25,7 @@ pub enum Applies<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[allow(missing_docs)]
 pub enum LookAheadValue<'a, S: 'a> {
+    Absent,
     Null,
     Scalar(&'a S),
     Enum(&'a str),
@@ -39,6 +40,7 @@ where
     fn from_input_value(input_value: &'a InputValue<S>, vars: &'a Variables<S>) -> Self {
         match *input_value {
             InputValue::Null => LookAheadValue::Null,
+            InputValue::Absent => LookAheadValue::Absent,
             InputValue::Scalar(ref s) => LookAheadValue::Scalar(s),
             InputValue::Enum(ref e) => LookAheadValue::Enum(e),
             InputValue::Variable(ref name) => vars

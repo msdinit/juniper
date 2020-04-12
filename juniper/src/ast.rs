@@ -37,6 +37,7 @@ pub enum Type<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[allow(missing_docs)]
 pub enum InputValue<S = DefaultScalarValue> {
+    Absent,
     Null,
     Scalar(S),
     Enum(String),
@@ -448,6 +449,7 @@ where
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             InputValue::Null => write!(f, "null"),
+            InputValue::Absent => Ok(()),
             InputValue::Scalar(ref s) => {
                 if let Some(s) = s.as_str() {
                     write!(f, "\"{}\"", s)

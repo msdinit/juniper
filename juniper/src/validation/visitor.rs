@@ -369,6 +369,7 @@ fn enter_input_value<'a, S, V>(
 
     match input_value.item {
         Null => v.enter_null_value(ctx, Spanning::start_end(start, end, ())),
+        Absent => {},
         Scalar(ref s) => v.enter_scalar_value(ctx, Spanning::start_end(start, end, s)),
         Enum(ref s) => v.enter_enum_value(ctx, Spanning::start_end(start, end, s)),
         Variable(ref s) => v.enter_variable_value(ctx, Spanning::start_end(start, end, s)),
@@ -392,6 +393,7 @@ fn exit_input_value<'a, S, V>(
 
     match input_value.item {
         Null => v.exit_null_value(ctx, Spanning::start_end(start, end, ())),
+        Absent => {},
         Scalar(ref s) => v.exit_scalar_value(ctx, Spanning::start_end(start, end, s)),
         Enum(ref s) => v.exit_enum_value(ctx, Spanning::start_end(start, end, s)),
         Variable(ref s) => v.exit_variable_value(ctx, Spanning::start_end(start, end, s)),

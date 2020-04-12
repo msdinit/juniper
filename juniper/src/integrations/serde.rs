@@ -295,6 +295,7 @@ where
     {
         match *self {
             InputValue::Null | InputValue::Variable(_) => serializer.serialize_unit(),
+            InputValue::Absent => serializer.serialize_unit(),
             InputValue::Scalar(ref s) => s.serialize(serializer),
             InputValue::Enum(ref v) => serializer.serialize_str(v),
             InputValue::List(ref v) => v

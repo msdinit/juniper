@@ -40,7 +40,7 @@ where
             }
 
             match *arg_value {
-                InputValue::Null | InputValue::Variable(_) => true,
+                InputValue::Null | InputValue::Absent | InputValue::Variable(_) => true,
                 ref v @ InputValue::Scalar(_) | ref v @ InputValue::Enum(_) => {
                     if let Some(parse_fn) = t.input_value_parse_fn() {
                         parse_fn(v)
