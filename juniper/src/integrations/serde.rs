@@ -249,7 +249,7 @@ where
             where
                 E: de::Error,
             {
-                Ok(InputValue::absent())
+                Ok(InputValue::null())
             }
 
             fn visit_seq<V>(self, mut visitor: V) -> Result<InputValue<S>, V::Error>

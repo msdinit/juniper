@@ -301,7 +301,7 @@ where
     /// Resolve all variables to their values.
     pub fn into_const(self, vars: &Variables<S>) -> Self {
         match self {
-            InputValue::Variable(v) => vars.get(&v).map_or_else(InputValue::null, Clone::clone),
+            InputValue::Variable(v) => vars.get(&v).map_or_else(InputValue::absent, Clone::clone),
             InputValue::List(l) => InputValue::List(
                 l.into_iter()
                     .map(|s| s.map(|v| v.into_const(vars)))
@@ -328,6 +328,14 @@ where
     pub fn is_null(&self) -> bool {
         match *self {
             InputValue::Null => true,
+            _ => false,
+        }
+    }
+
+    /// Is the value absent?
+    pub fn is_absent(&self) -> bool {
+        match *self {
+            InputValue::Absent => true,
             _ => false,
         }
     }

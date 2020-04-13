@@ -132,7 +132,7 @@ where
         }
 
         TypeType::Concrete(mt) => {
-            if value.is_null() {
+            if value.is_null() || value.is_absent() {
                 return errors;
             }
 
