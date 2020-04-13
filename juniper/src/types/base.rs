@@ -88,16 +88,21 @@ where
         }
 
         if let (&mut Some(ref mut args), &Some(ref meta_args)) = (&mut args, meta_args) {
-            for arg in meta_args {
-                if !args.contains_key(arg.name.as_str()) || args[arg.name.as_str()].is_null() {
-                    if let Some(ref default_value) = arg.default_value {
-                        args.insert(arg.name.as_str(), default_value.clone());
-                    } else if !args.contains_key(arg.name.as_str()) {
-                        args.insert(arg.name.as_str(), InputValue::absent());
-                    } else {
-                        args.insert(arg.name.as_str(), InputValue::null());
+            for meta_arg in meta_args {
+                match (&args.get(meta_arg.name.as_str()), &meta_arg.default_value) {
+                    (Some(arg), Some(ref default_value)) => {
+                        if arg.is_null() || arg.is_absent() {
+                            args.insert(meta_arg.name.as_str(), default_value.clone());
+                        }
                     }
-                }
+                    (None, Some(ref default_value)) => {
+                        args.insert(meta_arg.name.as_str(), default_value.clone());
+                    }
+                    (None, None) => {
+                        args.insert(meta_arg.name.as_str(), InputValue::absent());
+                    }
+                    _ => {}
+                };
             }
         }
 

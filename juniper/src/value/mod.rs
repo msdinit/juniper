@@ -40,6 +40,7 @@ where
         Value::Null
     }
 
+    /// Construct an absent value.
     pub fn absent() -> Self {
         Value::Absent
     }
