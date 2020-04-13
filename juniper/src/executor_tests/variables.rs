@@ -9,7 +9,7 @@ use crate::{
     validation::RuleError,
     value::{DefaultScalarValue, Object, ParseScalarResult, ParseScalarValue, Value},
     GraphQLError::ValidationError,
-    GraphQLOption
+    GraphQLOption,
 };
 
 #[derive(Debug)]
@@ -498,7 +498,7 @@ async fn optional_input_resolves_to_absent() {
             );
         },
     )
-        .await;
+    .await;
 }
 
 #[tokio::test]

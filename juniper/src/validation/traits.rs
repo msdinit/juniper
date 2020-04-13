@@ -106,6 +106,9 @@ where
     fn enter_null_value(&mut self, _: &mut ValidatorContext<'a, S>, _: Spanning<()>) {}
     fn exit_null_value(&mut self, _: &mut ValidatorContext<'a, S>, _: Spanning<()>) {}
 
+    fn enter_absent_value(&mut self, _: &mut ValidatorContext<'a, S>, _: Spanning<()>) {}
+    fn exit_absent_value(&mut self, _: &mut ValidatorContext<'a, S>, _: Spanning<()>) {}
+
     fn enter_scalar_value(&mut self, _: &mut ValidatorContext<'a, S>, _: Spanning<&'a S>) {}
     fn exit_scalar_value(&mut self, _: &mut ValidatorContext<'a, S>, _: Spanning<&'a S>) {}
 

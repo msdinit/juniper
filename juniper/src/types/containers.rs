@@ -1,4 +1,10 @@
-use crate::{ast::{FromInputValue, InputValue, Selection, ToInputValue}, executor::ExecutionResult, schema::meta::MetaType, value::{ScalarValue, Value}, GraphQLOption};
+use crate::{
+    ast::{FromInputValue, InputValue, Selection, ToInputValue},
+    executor::ExecutionResult,
+    schema::meta::MetaType,
+    value::{ScalarValue, Value},
+    GraphQLOption,
+};
 
 use crate::{
     executor::{Executor, Registry},
@@ -303,9 +309,9 @@ where
 }
 
 impl<S, T> FromInputValue<S> for GraphQLOption<T>
-    where
-        T: FromInputValue<S>,
-        S: ScalarValue,
+where
+    T: FromInputValue<S>,
+    S: ScalarValue,
 {
     fn from_input_value(v: &InputValue<S>) -> Option<GraphQLOption<T>> {
         match v {
@@ -320,9 +326,9 @@ impl<S, T> FromInputValue<S> for GraphQLOption<T>
 }
 
 impl<S, T, CtxT> GraphQLType<S> for GraphQLOption<T>
-    where
-        S: ScalarValue,
-        T: GraphQLType<S, Context = CtxT>,
+where
+    S: ScalarValue,
+    T: GraphQLType<S, Context = CtxT>,
 {
     type Context = CtxT;
     type TypeInfo = T::TypeInfo;
@@ -332,8 +338,8 @@ impl<S, T, CtxT> GraphQLType<S> for GraphQLOption<T>
     }
 
     fn meta<'r>(info: &T::TypeInfo, registry: &mut Registry<'r, S>) -> MetaType<'r, S>
-        where
-            S: 'r,
+    where
+        S: 'r,
     {
         registry.build_nullable_type::<T>(info).into_meta()
     }
@@ -353,9 +359,9 @@ impl<S, T, CtxT> GraphQLType<S> for GraphQLOption<T>
 }
 
 impl<S, T> ToInputValue<S> for GraphQLOption<T>
-    where
-        T: ToInputValue<S>,
-        S: ScalarValue,
+where
+    T: ToInputValue<S>,
+    S: ScalarValue,
 {
     fn to_input_value(&self) -> InputValue<S> {
         match *self {

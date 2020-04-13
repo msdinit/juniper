@@ -185,6 +185,15 @@ where
         self.1.exit_null_value(ctx, n);
     }
 
+    fn enter_absent_value(&mut self, ctx: &mut ValidatorContext<'a, S>, n: Spanning<()>) {
+        self.0.enter_absent_value(ctx, n);
+        self.1.enter_absent_value(ctx, n);
+    }
+    fn exit_absent_value(&mut self, ctx: &mut ValidatorContext<'a, S>, n: Spanning<()>) {
+        self.0.exit_absent_value(ctx, n);
+        self.1.exit_absent_value(ctx, n);
+    }
+
     fn enter_scalar_value(&mut self, ctx: &mut ValidatorContext<'a, S>, n: Spanning<&'a S>) {
         self.0.enter_scalar_value(ctx, n);
         self.1.enter_scalar_value(ctx, n);
