@@ -52,7 +52,6 @@ jobs:
         with:
           toolchain: ${{ matrix.rust }}
           profile: minimal
-          override: true
 
       - uses: davidB/rust-cargo-make@v1
         with:
