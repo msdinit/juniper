@@ -58,11 +58,13 @@ jobs:
           version: '0.30.4'
 
       - name: Build and run tests
+        uses: actions-rs/cargo@v1
         env:
           RUSTFLAGS: "-C link-dead-code"
           CARGO_MAKE_RUN_CODECOV: true
-        run: |
-          cargo make workspace-ci-flow --no-workspace
+        with:
+          command: make
+          args: workspace-ci-flow --no-workspace
 
   ###################################################
   # WASM Builds
