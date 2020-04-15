@@ -56,7 +56,7 @@ jobs:
 
       - uses: davidB/rust-cargo-make@v1
         with:
-          version: '0.20.0'
+          version: '0.30.4'
 
       - name: Build and run tests
         env:
