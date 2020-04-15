@@ -53,9 +53,10 @@ jobs:
           toolchain: ${{ matrix.rust }}
           profile: minimal
 
-      - uses: davidB/rust-cargo-make@v1
+      - name: Install cargo-make
+        uses: actions-rs/cargo@v1
         with:
-          version: '0.30.4'
+          command: install
 
       - name: Build and run tests
         uses: actions-rs/cargo@v1
