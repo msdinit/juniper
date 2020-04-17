@@ -54,7 +54,7 @@ jobs:
           args: --debug cargo-make
 
       - name: Build and run tests
-        run: cargo test
+        run: cargo make ci-flow
 
   ###################################################
   # WASM Builds
