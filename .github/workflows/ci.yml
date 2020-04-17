@@ -47,14 +47,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install cargo-make
-        uses: actions-rs/cargo@v1
+      - name: Install rust
+        uses: actions-rs/toolchain@v1
         with:
-          command: install
-          args: --debug cargo-make
+          toolchain: ${{ matrix.rust }}
+          profile: minimal
+          override: true
+
+      - name: Set default
+        run: rustup default {{ matrix.rust }}
+
+      - uses: davidB/rust-cargo-make@v1
+        with:
+          version: '0.20.0'
 
       - name: Build and run tests
-        run: cargo make ci-flow
+        env:
+          RUSTFLAGS: "-C link-dead-code"
+          CARGO_MAKE_RUN_CODECOV: true
+        run: |
+          cargo make workspace-ci-flow --no-workspace
 
   ###################################################
   # WASM Builds
