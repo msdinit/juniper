@@ -55,7 +55,7 @@ jobs:
           override: true
 
       - name: Set default
-        run: rustup default {{ matrix.rust }}
+        run: rustup default nightly
 
       - uses: davidB/rust-cargo-make@v1
         with:
