@@ -47,12 +47,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ matrix.rust }}
-          profile: minimal
-
       - name: Install cargo-make
         uses: actions-rs/cargo@v1
         with:
