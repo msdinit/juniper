@@ -2,6 +2,10 @@ name: CI
 
 on: [pull_request, push]
 
+env:
+  RUST_BACKTRACE: 1
+  RUST_LOG: debug
+
 jobs:
   ###################################################
   # Formatting
@@ -56,7 +60,7 @@ jobs:
 
       - uses: davidB/rust-cargo-make@v1
         with:
-          version: '0.20.0'
+          version: '0.30.8'
 
       - name: Build and run tests
         env:
